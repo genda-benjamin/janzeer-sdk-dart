@@ -12,11 +12,12 @@ await rpc.getStats(); await rpc.getEpoch();
 await rpc.getAccount(addr); await rpc.getBalance(addr); await rpc.getNonce(addr);
 await rpc.getTransactionsByAddress(addr, PageParams(size: 20));        // list, pending, total…
 await rpc.getTransactionByHash(hash);                          // status FINAL | PENDING | UNKNOWN
-await rpc.getTip(); await rpc.getBlockByNumber(12, true); await rpc.getBlocks(1, 100);
+await rpc.getTip(); await rpc.getGenesis(); await rpc.getBlockByNumber(12, true); await rpc.getBlocks(1, 100);
 await rpc.listValidators(); await rpc.getActiveValidators(); await rpc.getValidator(key);
 await rpc.listTokens(); await rpc.getToken(id); await rpc.getTokenHolders(id);
 await rpc.estimateFee('transfer');                             // fee, rule: 'minimum' | 'exact'
 await rpc.send(signedTx);                                      // or sendTransfer(body) etc.
+await rpc.methods();                                           // list supported node methods
 await rpc.call('janzeer_methods');                             // raw
 ```
 

@@ -3,6 +3,10 @@
 All notable changes to `janzeer_sdk` are documented here ([Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [SemVer](https://semver.org/)).
 
+## Unreleased
+
+- **Typed RPC wrappers on `RpcMethods`**: added typed `getGenesis()` returning `GenesisBlock`, and comprehensive test coverage and documentation for all node methods (`listValidators`, `getActiveValidators`, `getBlocks`, `listTokens`, `getTokenBalances`, `getTokenHolders`, `methods`, `getGenesis`).
+
 ## 0.1.9 — 2026-11-13
 
 No API change. `SpecVersion.node` is **0.1.14** (node 0.1.14: supply endpoints `/api/v1/supply`, `/supply/total`, `/supply/circulating`, and circulating supply counted the standard way; API 1.1.0 / protocol 3.4.0 unchanged, rolling upgrade).
