@@ -3,9 +3,10 @@
 All notable changes to `janzeer_sdk` are documented here ([Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [SemVer](https://semver.org/)).
 
-## Unreleased
+## 0.1.10 — 2026-11-15
 
-- **Typed RPC wrappers on `RpcMethods`**: added typed `getGenesis()` returning the genesis document as a decoded JSON map (`Future<Map<String, Object?>>`), and comprehensive test coverage and documentation for all node methods (`listValidators`, `getActiveValidators`, `getBlocks`, `listTokens`, `getTokenBalances`, `getTokenHolders`, `methods`, `getGenesis`).
+- **`JanzeerRpc.getGenesis()`** (`janzeer_getGenesis`): the network's public genesis document (`specVersion`, `networkId`, `anchors`, …) as a decoded JSON map. Contributed by @genda-benjamin (#4).
+- Tests for every typed node-method wrapper (`listValidators`, `getActiveValidators`, `getBlocks`, `listTokens`, `getTokenBalances`, `getTokenHolders`, `methods`, `getGenesis`) against the mocked transport.
 
 ## 0.1.9 — 2026-11-13
 
