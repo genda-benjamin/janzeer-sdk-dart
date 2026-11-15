@@ -3,6 +3,10 @@
 All notable changes to `janzeer_sdk` are documented here ([Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [SemVer](https://semver.org/)).
 
+## Unreleased
+
+- `example/watch_new_blocks.dart`: a `subscribeNewBlocks` example streaming finalized blocks over WebSocket.
+
 ## 0.1.10 — 2026-11-15
 
 - **`JanzeerRpc.getGenesis()`** (`janzeer_getGenesis`): the network's public genesis document (`specVersion`, `networkId`, `anchors`, …) as a decoded JSON map. Contributed by @genda-benjamin (#4).
