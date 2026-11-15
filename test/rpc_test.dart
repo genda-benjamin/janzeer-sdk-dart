@@ -48,6 +48,147 @@ void main() {
               'data': {'type': 'INVALID_NONCE'}
             }
           };
+        case 'janzeer_methods':
+          return {
+            'jsonrpc': '2.0',
+            'id': id,
+            'result': [
+              {
+                'name': 'janzeer_getInfo',
+                'params': <String>[],
+                'description': 'Node status and tip'
+              }
+            ]
+          };
+        case 'janzeer_getGenesis':
+          return {
+            'jsonrpc': '2.0',
+            'id': id,
+            'result': {
+              'specVersion': 1,
+              'networkId': 'janzeer',
+              'createDate': 1700000000,
+              'signerPublicKey': '0xgenesis_signer',
+              'anchors': <Object?>[],
+            }
+          };
+        case 'janzeer_listValidators':
+          final p = r['params'] as Map?;
+          expect(p?['page'], 1);
+          expect(p?['size'], 10);
+          return {
+            'jsonrpc': '2.0',
+            'id': id,
+            'result': {
+              'total': 1,
+              'page': 1,
+              'pageSize': 10,
+              'totalPages': 1,
+              'list': [
+                {
+                  'key': 'val_key_1',
+                  'walletAddress': '0xval_wallet',
+                  'registeredAt': 12345,
+                  'active': true,
+                  'banned': false,
+                  'exited': false
+                }
+              ]
+            }
+          };
+        case 'janzeer_getActiveValidators':
+          return {
+            'jsonrpc': '2.0',
+            'id': id,
+            'result': [
+              {
+                'key': 'val_active_1',
+                'walletAddress': '0xval_active_wallet',
+                'registeredAt': 12345,
+                'active': true,
+                'banned': false,
+                'exited': false
+              }
+            ]
+          };
+        case 'janzeer_getBlocks':
+          final p = r['params'] as Map?;
+          expect(p?['fromHeight'], 1);
+          expect(p?['toHeight'], 2);
+          expect(p?['includeTransactions'], false);
+          return {
+            'jsonrpc': '2.0',
+            'id': id,
+            'result': [
+              {
+                'type': 'main',
+                'height': 1,
+                'timestamp': 1000,
+                'transactionsCount': 0,
+                'hash': '0xblock1',
+                'previousHash': '0xblock0',
+                'producer': 'val1',
+                'signature': 'sig1'
+              }
+            ]
+          };
+        case 'janzeer_listTokens':
+          final p = r['params'] as Map?;
+          expect(p?['page'], 0);
+          expect(p?['size'], 20);
+          return {
+            'jsonrpc': '2.0',
+            'id': id,
+            'result': {
+              'total': 1,
+              'page': 0,
+              'pageSize': 20,
+              'totalPages': 1,
+              'list': [
+                {
+                  'tokenId': 'tok1',
+                  'symbol': 'TEST',
+                  'name': 'Test Token',
+                  'decimals': 8,
+                  'cap': 1000000,
+                  'totalSupply': 500,
+                  'issuer': '0xowner'
+                }
+              ]
+            }
+          };
+        case 'janzeer_getTokenBalances':
+          final p = r['params'] as Map?;
+          expect(p?['address'], '0xaddr');
+          return {
+            'jsonrpc': '2.0',
+            'id': id,
+            'result': {
+              'total': 1,
+              'page': 0,
+              'pageSize': 20,
+              'totalPages': 1,
+              'list': [
+                {'tokenId': 'tok1', 'holder': '0xaddr', 'balance': 100500000}
+              ]
+            }
+          };
+        case 'janzeer_getTokenHolders':
+          final p = r['params'] as Map?;
+          expect(p?['tokenId'], 'tok1');
+          return {
+            'jsonrpc': '2.0',
+            'id': id,
+            'result': {
+              'total': 1,
+              'page': 0,
+              'pageSize': 20,
+              'totalPages': 1,
+              'list': [
+                {'tokenId': 'tok1', 'holder': '0xholder', 'balance': 100500000}
+              ]
+            }
+          };
         default:
           return {
             'jsonrpc': '2.0',
@@ -92,6 +233,53 @@ void main() {
       expect(r[0].ok, isTrue);
       expect(r[1].ok, isFalse);
       expect(r[2].result.toString(), '1000.00000001');
+    });
+    test(
+        'typed RPC wrappers for node methods: listValidators, getActiveValidators, getBlocks, listTokens, getTokenBalances, getTokenHolders, methods, getGenesis',
+        () async {
+      final rpc = JanzeerRpc('http://node:7019', httpClient: client);
+
+      final m = await rpc.methods();
+      expect(m.length, 1);
+      expect(m.first.name, 'janzeer_getInfo');
+      expect(m.first.description, 'Node status and tip');
+
+      final gen = await rpc.getGenesis();
+      expect((gen['specVersion'] as JsonNumber).toInt(), 1);
+      expect(gen['networkId'], 'janzeer');
+      expect(gen['anchors'], isEmpty);
+
+      final valPage =
+          await rpc.listValidators(const PageParams(page: 1, size: 10));
+      expect(valPage.total, 1);
+      expect(valPage.list.first.key, 'val_key_1');
+      expect(valPage.list.first.active, isTrue);
+
+      final activeVals = await rpc.getActiveValidators();
+      expect(activeVals.length, 1);
+      expect(activeVals.first.key, 'val_active_1');
+
+      final blocks = await rpc.getBlocks(1, 2);
+      expect(blocks.length, 1);
+      expect(blocks.first.height, 1);
+      expect(blocks.first.hash, '0xblock1');
+
+      final tokPage = await rpc.listTokens(const PageParams(page: 0, size: 20));
+      expect(tokPage.total, 1);
+      expect(tokPage.list.first.tokenId, 'tok1');
+      expect(tokPage.list.first.symbol, 'TEST');
+
+      final balances = await rpc.getTokenBalances('0xaddr');
+      expect(balances.total, 1);
+      expect(balances.list.first.tokenId, 'tok1');
+      expect(balances.list.first.holder, '0xaddr');
+      expect(balances.list.first.balance, BigInt.from(100500000));
+
+      final holders = await rpc.getTokenHolders('tok1');
+      expect(holders.total, 1);
+      expect(holders.list.first.tokenId, 'tok1');
+      expect(holders.list.first.holder, '0xholder');
+      expect(holders.list.first.balance, BigInt.from(100500000));
     });
   });
 
