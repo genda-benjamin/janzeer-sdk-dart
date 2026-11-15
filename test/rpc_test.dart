@@ -65,15 +65,11 @@ void main() {
             'jsonrpc': '2.0',
             'id': id,
             'result': {
-              'timestamp': 1700000000,
-              'height': 0,
-              'previousHash':
-                  '0x0000000000000000000000000000000000000000000000000000000000000000',
-              'hash': '0xgenesis_hash',
-              'signature': '0xgenesis_sig',
-              'publicKey': '0xgenesis_pubkey',
-              'epochIndex': 0,
-              'validatorsCount': 4
+              'specVersion': 1,
+              'networkId': 'janzeer',
+              'createDate': 1700000000,
+              'signerPublicKey': '0xgenesis_signer',
+              'anchors': <Object?>[],
             }
           };
         case 'janzeer_listValidators':
@@ -249,9 +245,9 @@ void main() {
       expect(m.first.description, 'Node status and tip');
 
       final gen = await rpc.getGenesis();
-      expect(gen.height, 0);
-      expect(gen.hash, '0xgenesis_hash');
-      expect(gen.validatorsCount, 4);
+      expect((gen['specVersion'] as JsonNumber).toInt(), 1);
+      expect(gen['networkId'], 'janzeer');
+      expect(gen['anchors'], isEmpty);
 
       final valPage =
           await rpc.listValidators(const PageParams(page: 1, size: 10));

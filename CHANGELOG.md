@@ -5,7 +5,7 @@ All notable changes to `janzeer_sdk` are documented here ([Keep a Changelog](htt
 
 ## Unreleased
 
-- **Typed RPC wrappers on `RpcMethods`**: added typed `getGenesis()` returning `GenesisBlock`, and comprehensive test coverage and documentation for all node methods (`listValidators`, `getActiveValidators`, `getBlocks`, `listTokens`, `getTokenBalances`, `getTokenHolders`, `methods`, `getGenesis`).
+- **Typed RPC wrappers on `RpcMethods`**: added typed `getGenesis()` returning the genesis document as a decoded JSON map (`Future<Map<String, Object?>>`), and comprehensive test coverage and documentation for all node methods (`listValidators`, `getActiveValidators`, `getBlocks`, `listTokens`, `getTokenBalances`, `getTokenHolders`, `methods`, `getGenesis`).
 
 ## 0.1.9 — 2026-11-13
 

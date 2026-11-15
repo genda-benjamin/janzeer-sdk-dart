@@ -125,8 +125,8 @@ abstract class RpcMethods implements RpcTransport {
       BlockView.fromJson(await call('janzeer_getTip'));
 
   /// `janzeer_getGenesis`
-  Future<GenesisBlock> getGenesis() async =>
-      GenesisBlock.fromJson(await call('janzeer_getGenesis'));
+  Future<Map<String, Object?>> getGenesis() async =>
+      asObject(await call('janzeer_getGenesis'));
 
   /// `janzeer_getBlockByNumber`
   Future<BlockView> getBlockByNumber(int height,
