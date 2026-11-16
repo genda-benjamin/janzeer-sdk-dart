@@ -3,9 +3,9 @@
 All notable changes to `janzeer_sdk` are documented here ([Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [SemVer](https://semver.org/)).
 
-## Unreleased
+## 0.1.11 — 2026-11-16
 
-- `example/watch_new_blocks.dart`: a `subscribeNewBlocks` example streaming finalized blocks over WebSocket.
+- **New example `example/watch_new_blocks.dart`**: follow newly finalized blocks over the WebSocket feed with `subscribeNewBlocks` (height, hash, producer, transaction count), stopping after `EXAMPLE_BLOCKS` blocks, `EXAMPLE_SECONDS` or Ctrl-C. Contributed by @genda-benjamin (#6). No library change.
 
 ## 0.1.10 — 2026-11-15
 
