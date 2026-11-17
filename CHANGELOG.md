@@ -3,6 +3,10 @@
 All notable changes to `janzeer_sdk` are documented here ([Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [SemVer](https://semver.org/)).
 
+## Unreleased
+
+- **New example `example/offline_sign_and_broadcast.dart`**: three-step flow to query nonce online, sign offline into a file with no network calls, broadcast with `sendRawTransaction` and await finality. Contributed by @genda-benjamin (#8).
+
 ## 0.1.11 — 2026-11-16
 
 - **New example `example/watch_new_blocks.dart`**: follow newly finalized blocks over the WebSocket feed with `subscribeNewBlocks` (height, hash, producer, transaction count), stopping after `EXAMPLE_BLOCKS` blocks, `EXAMPLE_SECONDS` or Ctrl-C. Contributed by @genda-benjamin (#6). No library change.
