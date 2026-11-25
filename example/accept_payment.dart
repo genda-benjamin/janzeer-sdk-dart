@@ -63,11 +63,12 @@ Future<void> main() async {
   try {
     ev = await completer.future.timeout(Duration(seconds: timeoutSeconds));
   } on TimeoutException {
-    await sub.unsubscribe();
-    await ws.close();
     stderr.writeln(
         'timeout: no matching payment received within $timeoutSeconds seconds');
-    exit(1);
+    await sub.unsubscribe();
+    await ws.close();
+    exitCode = 1;
+    return;
   }
 
   try {
@@ -78,11 +79,11 @@ Future<void> main() async {
     } else {
       stderr.writeln(
           'payment transaction ${ev.transaction.hash} ended with non-final status: ${fin.status.wireName}');
-      exit(1);
+      exitCode = 1;
     }
   } catch (e) {
     stderr.writeln('waitForFinality failed: $e');
-    exit(1);
+    exitCode = 1;
   } finally {
     await sub.unsubscribe();
     await ws.close();
